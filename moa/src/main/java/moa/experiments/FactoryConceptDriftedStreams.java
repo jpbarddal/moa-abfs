@@ -22,7 +22,8 @@ package moa.experiments;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedList;
-import moa.streams.ConceptDriftStreamDetailingFeatures;
+
+import moa.streams.ConceptDriftStream;
 import moa.streams.ExampleStream;
 import moa.streams.IrrelevantFeatureAppenderStream;
 import moa.streams.generators.*;
@@ -282,8 +283,8 @@ public class FactoryConceptDriftedStreams {
         // also, the priori concept is also set
         LinkedList<ExampleStream> parts = new LinkedList<>();
         for (int i = 0; i < numDrifts; i++) {
-            ConceptDriftStreamDetailingFeatures c
-                    = new ConceptDriftStreamDetailingFeatures();
+            ConceptDriftStream c
+                    = new ConceptDriftStream();
             c.widthOption.setValue(driftLength);
             c.positionOption.setValue(position);
             c.streamOption.setCurrentObject(concepts.get(i)/*.copy()*/);
@@ -293,8 +294,8 @@ public class FactoryConceptDriftedStreams {
 
         // now, we set the driftstream accordingly
         for (int i = 0; i < parts.size(); i++) {
-            ConceptDriftStreamDetailingFeatures current
-                    = (ConceptDriftStreamDetailingFeatures) parts.get(i);
+            ConceptDriftStream current
+                    = (ConceptDriftStream) parts.get(i);
             ExampleStream next = null;
             if (i + 1 >= parts.size()) {
                 next = concepts.getLast();
@@ -306,57 +307,10 @@ public class FactoryConceptDriftedStreams {
 
         // just to be sure, let's prepare all the inner streams
         for (ExampleStream str : parts) {
-            ((ConceptDriftStreamDetailingFeatures) str).prepareForUse();
+            ((ConceptDriftStream) str).prepareForUse();
         }
 
         return parts.getFirst();
-    }
-
-    public HashMap<String, ExampleStream> instantiateAllHyperplaneReg(){
-        HashMap<String, ExampleStream> hyps = new HashMap<>();
-        hyps.putAll(instantiateHyperplaneRegDistance());
-        hyps.putAll(instantiateHyperplaneRegSqDistance());
-        hyps.putAll(instantiateHyperplaneRegCubicDistance());
-        return hyps;
-    }
-
-    // type = "Distance", "SquareDistance", "CubicDistance"
-
-    public HashMap<String, ExampleStream> instantiateHyperplaneRegDistance(){
-        return instantiateHyperplaneReg("Distance");
-    }
-
-    public HashMap<String, ExampleStream> instantiateHyperplaneRegSqDistance(){
-        return instantiateHyperplaneReg("SquareDistance");
-    }
-
-    public HashMap<String, ExampleStream> instantiateHyperplaneRegCubicDistance(){
-        return instantiateHyperplaneReg("CubicDistance");
-    }
-
-    public HashMap<String, ExampleStream> instantiateHyperplaneReg(String type) {
-        LinkedList<ExampleStream> substreams = new LinkedList<>();
-        int seeds[] = new int[]{1327123871, 1231245, 612372178, 12372178};
-        for (int i = 0; i < NUM_CONCEPTS; i++) {
-            HyperplaneGeneratorReg hyp = new HyperplaneGeneratorReg();
-            hyp.numAttsOption.setValue(10);
-            hyp.numDriftAttsOption.setValue(0);
-            hyp.targetValueOption.setChosenLabel(type);
-            hyp.instanceRandomSeedOption.setValue(seeds[i]);
-            hyp.prepareForUse();
-            substreams.add((ExampleStream) hyp.copy());
-        }
-
-        // creates final hash
-        HashMap<String, ExampleStream> ret
-                = new HashMap<String, ExampleStream>();
-        ret.put("HYP" + type + "(A)" , createDriftedStream(substreams,
-                1,
-                STREAM_LENGTH));
-        ret.put("HYP" + type + "(G)" , createDriftedStream(substreams,
-                GRADUAL_DRIFT_LENGTH,
-                STREAM_LENGTH));
-        return ret;
     }
 
 }

@@ -137,11 +137,6 @@ public class NewFeatureSelectionExperiments {
         }
         evaluator.reset();
 
-//        if (c instanceof FeatureSelectionClassifier) {
-//            ((FeatureSelectionClassifier) c).debugFileOption.
-//                    setValue(("./debug/" + filename));
-//        }
-
         // runs the experiment  
         EvaluatePrequential prequential = new EvaluatePrequential();
         prequential.evaluatorOption.setCurrentObject(evaluator.copy());
@@ -231,7 +226,6 @@ public class NewFeatureSelectionExperiments {
 
         // Hoeffding Tree
         HoeffdingTree tree = new HoeffdingTree();
-        tree.gracePeriodOption.setValue(500);
         tree.prepareForUse();
         classifiers.put("HT", tree);
 
@@ -242,7 +236,6 @@ public class NewFeatureSelectionExperiments {
 
         // kNN
         kNN knn = new kNN();
-        knn.kOption.setValue(9);
         knn.limitOption.setValue(500);
         knn.prepareForUse();
         classifiers.put("KNN", knn);

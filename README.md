@@ -1,8 +1,8 @@
 # MOA-ABFS
 
-## Boosting Decision Stumps for Dynamic Feature Selection on Data Streams (ABFS) - JMLR SUBMISSION
+## Boosting Decision Stumps for Dynamic Feature Selection on Data Streams (ABFS) - INFORMATION SYSTEMS SUBMISSION
 This repository includes the code for the ABFS feature selector. The code here reflects the code used in the submission entitled **"Boosting Decision Stumps for Dynamic Feature Selection on Data Streams"** authored by *Jean Paul Barddal, Heitor Murilo Gomes, Fabrício Enembreck, Albert Bifet, and Bernhard Pfahringer*.
-This paper has been submitted to JMLR for refereeing.
+This paper has been submitted to Information Systems for refereeing.
 
 In practice, this repository is a clone of the Massive Online Analysis (MOA) framework, with the addition of:
 
